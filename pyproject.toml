@@ -1,0 +1,73 @@
+[project]
+name = "racelab"
+description = "Analyzing and visualizing Formula 1 data using FastF1"
+authors = [
+    { name = "João Atkinson", email = "joao.atkinson+gh@posgrad.ufsc.br" },
+]
+requires-python = ">=3.13"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["version"]
+dependencies = []
+
+[dependency-groups]
+
+dev = ["pre-commit>=3", { include-group = "test" }]
+coverage = ["coverage>=7", "covdefaults>=2"]
+test = ["pytest>=9", { include-group = "coverage" }]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=80"]
+
+[tool.setuptools]
+zip-safe = true
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = ["docs/**", "tests/**"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = { attr = "racelab.__version__" }
+
+[tool.setuptools.package-data]
+racelab = ["py.typed"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 144
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[tool.ruff.lint.isort]
+forced-separate = ["testing", "tests"]
+known-first-party = ["racelab"]
+split-on-trailing-comma = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "ANN201", "S101"]
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.mypy.overrides."testing.*"]
+disallow_untyped_defs = false
+
+[tool.mypy.overrides."tests.*"]
+disallow_untyped_defs = false
+
+[tool.coverage.run]
+source = ["racelab"]
+plugins = ["covdefaults"]
